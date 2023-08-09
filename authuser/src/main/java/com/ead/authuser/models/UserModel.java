@@ -30,7 +30,7 @@ public class UserModel implements Serializable {
     @JsonIgnore
     private String password;
     @Column(nullable = false, length = 150)
-    private String fullMame;
+    private String fullName;
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
