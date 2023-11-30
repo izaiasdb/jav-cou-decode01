@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -46,10 +46,30 @@ public class UserController {
 //        return ResponseEntity.status(HttpStatus.OK).body(userModelPage);
 //    }
 
+//    @GetMapping
+//    public ResponseEntity<Page<UserModel>> getAllUsers(SpecificationTemplate.UserSpec spec,
+//                                                       @PageableDefault(page = 0, size = 10, sort = "userId", direction = Sort.Direction.ASC) Pageable pageable){
+//        Page<UserModel> userModelPage = userService.findAll(spec, pageable);
+//        if(!userModelPage.isEmpty()){
+//            for(UserModel user : userModelPage.toList()){
+//                user.add(linkTo(methodOn(UserController.class).getOneUser(user.getUserId())).withSelfRel());
+//            }
+//        }
+//        return ResponseEntity.status(HttpStatus.OK).body(userModelPage);
+//    }
+
     @GetMapping
     public ResponseEntity<Page<UserModel>> getAllUsers(SpecificationTemplate.UserSpec spec,
-                                                       @PageableDefault(page = 0, size = 10, sort = "userId", direction = Sort.Direction.ASC) Pageable pageable){
-        Page<UserModel> userModelPage = userService.findAll(spec, pageable);
+                                                       @PageableDefault(page = 0, size = 10, sort = "userId", direction = Sort.Direction.ASC) Pageable pageable,
+                                                       @RequestParam(required = false) UUID courseId){
+        Page<UserModel> userModelPage = null;
+
+        if (Objects.nonNull(courseId)) {
+            userModelPage = userService.findAll(SpecificationTemplate.userCourseId(courseId).and(spec), pageable);
+        } else {
+            userModelPage = userService.findAll(spec, pageable);
+        }
+
         if(!userModelPage.isEmpty()){
             for(UserModel user : userModelPage.toList()){
                 user.add(linkTo(methodOn(UserController.class).getOneUser(user.getUserId())).withSelfRel());

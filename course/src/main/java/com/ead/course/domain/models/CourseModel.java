@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -48,8 +50,14 @@ public class CourseModel implements Serializable {
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(mappedBy = "course", fetch = FetchType.LAZY )
+    //@OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = false) //Not let any orphans records
+    //@OnDelete(action = OnDeleteAction.CASCADE) // When delete one course will delete the modules related with the course
     @Fetch(FetchMode.SUBSELECT)
     private Set<ModuleModel> modules;
+
+//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+//    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY )
+//    private Set<CourseUserModel> courseUsers;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToMany(fetch = FetchType.LAZY)
@@ -57,6 +65,7 @@ public class CourseModel implements Serializable {
             joinColumns = @JoinColumn(name = "course_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<UserModel> users;
+
 
 
 }
