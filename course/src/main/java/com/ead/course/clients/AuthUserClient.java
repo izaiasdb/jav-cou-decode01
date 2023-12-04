@@ -2,8 +2,10 @@ package com.ead.course.clients;
 
 //import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 //import io.github.resilience4j.retry.annotation.Retry;
+import com.ead.course.domain.models.CourseUserModel;
 import com.ead.course.dtos.CourseDto;
 import com.ead.course.dtos.ResponsePageDto;
+import com.ead.course.dtos.UserCourseDto;
 import com.ead.course.dtos.UserDto;
 import com.ead.course.services.UtilsService;
 import lombok.extern.log4j.Log4j2;
@@ -43,7 +45,7 @@ public class AuthUserClient {
     public Page<UserDto> getAllCoursesByUser(UUID courseId, Pageable pageable, String token){
         List<UserDto> searchResult = null;
         String url = REQUEST_URL_COURSE + utilsService.createUrl(courseId, pageable);
-        HttpHeaders headers = new HttpHeaders();
+//        HttpHeaders headers = new HttpHeaders();
 //        headers.set("Authorization", token);
 //        HttpEntity<String> requestEntity = new HttpEntity<String>("parameters", headers);
         log.debug("Request URL: {} ", url);
@@ -62,6 +64,17 @@ public class AuthUserClient {
         return new PageImpl<>(searchResult);
     }
 
+    public ResponseEntity<UserDto> getOneUser(UUID userId){
+        List<UserDto> searchResult = null;
+        String url = REQUEST_URL_COURSE + "/users/" + userId;
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.set("Authorization", token);
+//        HttpEntity<String> requestEntity = new HttpEntity<String>("parameters", headers);
+        log.debug("Request URL: {} ", url);
+        log.info("Request URL: {} ", url);
+        return restTemplate.exchange(url, HttpMethod.GET, null, UserDto.class);
+    }
+
     public Page<CourseDto> circuitbreakerfallback(UUID userId, Pageable pageable, Throwable t) {
         log.error("Inside circuit breaker fallback, cause - {}", t.toString());
         List<CourseDto> searchResult = new ArrayList<>();
@@ -74,5 +87,14 @@ public class AuthUserClient {
         return new PageImpl<>(searchResult);
     }
 
+    public void postSubscriptionUserInCourse(UUID courseId, UUID userId) {
+        String url = REQUEST_URL_COURSE + "/users/" + userId + "/courses/subscription";
 
+        UserCourseDto userCourseDto = UserCourseDto.builder()
+                .courseId(courseId)
+                .userId(userId)
+                .build();
+
+        restTemplate.postForObject(url, userCourseDto, String.class);
+    }
 }

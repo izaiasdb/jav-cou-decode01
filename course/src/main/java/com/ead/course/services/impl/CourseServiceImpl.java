@@ -1,15 +1,9 @@
 package com.ead.course.services.impl;
 
-import com.ead.course.domain.models.CourseModel;
-import com.ead.course.domain.models.LessonModel;
-import com.ead.course.domain.models.ModuleModel;
-import com.ead.course.domain.models.UserModel;
+import com.ead.course.domain.models.*;
 import com.ead.course.dtos.NotificationCommandDto;
 import com.ead.course.publishers.NotificationCommandPublisher;
-import com.ead.course.repositories.CourseRepository;
-import com.ead.course.repositories.LessonRepository;
-import com.ead.course.repositories.ModuleRepository;
-import com.ead.course.repositories.UserRepository;
+import com.ead.course.repositories.*;
 import com.ead.course.services.CourseService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +34,27 @@ public class CourseServiceImpl implements CourseService {
     UserRepository userRepository;
 
     @Autowired
+    CourseUserRepository courseUserRepository;
+
+    @Autowired
     NotificationCommandPublisher notificationCommandPublisher;
+
+//    @Transactional
+//    @Override
+//    public void delete(CourseModel courseModel) {
+//        List<ModuleModel> moduleModelList = moduleRepository.findAllLModulesIntoCourse(courseModel.getCourseId());
+//        if (!moduleModelList.isEmpty()){
+//            for(ModuleModel module : moduleModelList){
+//                List<LessonModel> lessonModelList = lessonRepository.findAllLessonsIntoModule(module.getModuleId());
+//                if (!lessonModelList.isEmpty()){
+//                    lessonRepository.deleteAll(lessonModelList);
+//                }
+//            }
+//            moduleRepository.deleteAll(moduleModelList);
+//        }
+//        courseRepository.deleteCourseUserByCourse(courseModel.getCourseId());
+//        courseRepository.delete(courseModel);
+//    }
 
     @Transactional
     @Override
@@ -55,7 +69,10 @@ public class CourseServiceImpl implements CourseService {
             }
             moduleRepository.deleteAll(moduleModelList);
         }
-        courseRepository.deleteCourseUserByCourse(courseModel.getCourseId());
+        List<CourseUserModel> courseUserModelList = courseUserRepository.findAllCourseUserIntoCourse(courseModel.getCourseId());
+        if (!courseUserModelList.isEmpty()) {
+            courseUserRepository.deleteAll(courseUserModelList);
+        }
         courseRepository.delete(courseModel);
     }
 

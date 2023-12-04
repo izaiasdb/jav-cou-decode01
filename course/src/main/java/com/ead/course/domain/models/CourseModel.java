@@ -55,17 +55,23 @@ public class CourseModel implements Serializable {
     @Fetch(FetchMode.SUBSELECT)
     private Set<ModuleModel> modules;
 
-//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-//    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY )
-//    private Set<CourseUserModel> courseUsers;
-
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(    name = "TB_COURSES_USERS",
-            joinColumns = @JoinColumn(name = "course_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private Set<UserModel> users;
+    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY )
+    private Set<CourseUserModel> courseUsers;
 
+//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+//    @ManyToMany(fetch = FetchType.LAZY)
+//    @JoinTable(    name = "TB_COURSES_USERS",
+//            joinColumns = @JoinColumn(name = "course_id"),
+//            inverseJoinColumns = @JoinColumn(name = "user_id"))
+//    private Set<UserModel> users;
 
+    public CourseUserModel convertToCourseUserModel(UUID userId){
+        return CourseUserModel.builder()
+                .id(UUID.randomUUID())
+                .course(this)
+                .userId(userId)
+                .build();
+    }
 
 }
