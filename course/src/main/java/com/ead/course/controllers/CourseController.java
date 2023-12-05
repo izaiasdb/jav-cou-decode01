@@ -95,11 +95,13 @@ public class CourseController {
         return ResponseEntity.status(HttpStatus.OK).body(courseModel);
     }
 
+//    V1
 //    @GetMapping
 //    public ResponseEntity<List<CourseModel>> getAllCourses(){
 //        return ResponseEntity.status(HttpStatus.OK).body(courseService.findAll());
 //    }
 
+//    V2
 //    @PreAuthorize("hasAnyRole('STUDENT')")
 //    @GetMapping
 //    public ResponseEntity<Page<CourseModel>> getAllCourses(SpecificationTemplate.CourseSpec spec,
@@ -113,16 +115,25 @@ public class CourseController {
 //        }
 //    }
 
+//    V3
+//    @GetMapping
+//    public ResponseEntity<Page<CourseModel>> getAllCourses(SpecificationTemplate.CourseSpec spec,
+//                                                           @PageableDefault(page = 0, size = 10, sort = "courseId", direction = Sort.Direction.ASC) Pageable pageable,
+//                                                           @RequestParam(required = false) UUID userId){
+//        if(userId != null){
+//            return ResponseEntity.status(HttpStatus.OK)
+//                    .body(courseService.findAll(SpecificationTemplate.courseUserId(userId).and(spec), pageable));
+//        } else {
+//            return ResponseEntity.status(HttpStatus.OK).body(courseService.findAll(spec, pageable));
+//        }
+//    }
+
+//    V4
     @GetMapping
     public ResponseEntity<Page<CourseModel>> getAllCourses(SpecificationTemplate.CourseSpec spec,
                                                            @PageableDefault(page = 0, size = 10, sort = "courseId", direction = Sort.Direction.ASC) Pageable pageable,
                                                            @RequestParam(required = false) UUID userId){
-        if(userId != null){
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(courseService.findAll(SpecificationTemplate.courseUserId(userId).and(spec), pageable));
-        } else {
-            return ResponseEntity.status(HttpStatus.OK).body(courseService.findAll(spec, pageable));
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(courseService.findAll(spec, pageable));
     }
 
 //    @PreAuthorize("hasAnyRole('STUDENT')")

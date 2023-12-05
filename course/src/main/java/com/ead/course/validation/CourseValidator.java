@@ -6,7 +6,7 @@ import com.ead.course.clients.AuthUserClient;
 import com.ead.course.domain.enums.UserType;
 import com.ead.course.domain.models.UserModel;
 import com.ead.course.dtos.CourseDto;
-import com.ead.course.dtos.UserDto;
+//import com.ead.course.dtos.UserDto;
 import com.ead.course.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -42,31 +42,43 @@ public class CourseValidator implements Validator {
         return false;
     }
 
+//    V1
+//    @Override
+//    public void validate(Object o, Errors errors) {
+//        CourseDto courseDto = (CourseDto) o;
+//        validator.validate(courseDto, errors);
+//        if(!errors.hasErrors()){
+//            validateUserInstructor(courseDto.getUserInstructor(), errors);
+//        }
+//    }
+
+//    V2
     @Override
     public void validate(Object o, Errors errors) {
         CourseDto courseDto = (CourseDto) o;
         validator.validate(courseDto, errors);
         if(!errors.hasErrors()){
-            validateUserInstructor(courseDto.getUserInstructor(), errors);
+//            validateUserInstructor(courseDto.getUserInstructor(), errors);
         }
     }
 
-    private void validateUserInstructor(UUID userInstructor, Errors errors){
-        ResponseEntity<UserDto> responseInstructor;
-
-        try {
-            responseInstructor = authUserClient.getOneUser(userInstructor);
-
-            if(responseInstructor.getBody().getUserType().equals(UserType.STUDENT)) {
-                errors.rejectValue("userInstructor", "UserInstructorError", "User must be INSTRUCTOR or ADMIN.");
-            }
-        } catch (HttpStatusCodeException e) {
-            //e.printStackTrace();
-            if (e.getStatusCode().equals(HttpStatus.NOT_FOUND)){
-                errors.rejectValue("userInstructor", "UserInstructorError", "Instructor not found.");
-            }
-        }
-    }
+//    V1
+//    private void validateUserInstructor(UUID userInstructor, Errors errors){
+//        ResponseEntity<UserDto> responseInstructor;
+//
+//        try {
+//            responseInstructor = authUserClient.getOneUser(userInstructor);
+//
+//            if(responseInstructor.getBody().getUserType().equals(UserType.STUDENT)) {
+//                errors.rejectValue("userInstructor", "UserInstructorError", "User must be INSTRUCTOR or ADMIN.");
+//            }
+//        } catch (HttpStatusCodeException e) {
+//            //e.printStackTrace();
+//            if (e.getStatusCode().equals(HttpStatus.NOT_FOUND)){
+//                errors.rejectValue("userInstructor", "UserInstructorError", "Instructor not found.");
+//            }
+//        }
+//    }
 
 //    private void validateUserInstructor(UUID userInstructor, Errors errors){
 //        UUID currentUserId = authenticationCurrentUserService.getCurrentUser().getUserId();
