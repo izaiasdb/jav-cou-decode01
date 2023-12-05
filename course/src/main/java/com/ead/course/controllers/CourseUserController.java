@@ -13,6 +13,7 @@ import com.ead.course.services.UserService;
 import com.ead.course.specifications.SpecificationTemplate;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -45,9 +46,11 @@ public class CourseUserController {
 
 //    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
     @GetMapping("/courses/{courseId}/users")
-    public ResponseEntity<Object> getAllUsersByCourse(SpecificationTemplate.UserSpec spec,
-                                                      @PageableDefault(page = 0, size = 10, sort = "userId", direction = Sort.Direction.ASC) Pageable pageable,
-                                                      @PathVariable(value = "courseId") UUID courseId){
+    //public ResponseEntity<Page<UserDto>> getAllUsersByCourse(
+    public ResponseEntity<Object> getAllUsersByCourse(
+            SpecificationTemplate.UserSpec spec,
+            @PageableDefault(page = 0, size = 10, sort = "userId", direction = Sort.Direction.ASC) Pageable pageable,
+            @PathVariable(value = "courseId") UUID courseId){
         Optional<CourseModel> courseModelOptional = courseService.findById(courseId);
         if(!courseModelOptional.isPresent()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Course Not Found.");
@@ -103,4 +106,13 @@ public class CourseUserController {
 //        courseService.saveSubscriptionUserInCourseAndSendNotification(courseModelOptional.get(), userModelOptional.get());
 //        return ResponseEntity.status(HttpStatus.CREATED).body("Subscription created successfully.");
 //    }
+
+    @DeleteMapping("/courses/users/{userId}")
+    public ResponseEntity<Object> deleteCourseUserByUser(@PathVariable(value = "userId") UUID userId){
+        if(!courseUserService.existsByUserId(userId)){
+            return  ResponseEntity.status(HttpStatus.NOT_FOUND).body("CourseUser not found.");
+        }
+        courseUserService.deleteCourseUserByUser(userId);
+        return  ResponseEntity.status(HttpStatus.OK).body("CourseUser deleted successfully.");
+    }
 }
