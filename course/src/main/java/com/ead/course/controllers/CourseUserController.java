@@ -6,7 +6,7 @@ import com.ead.course.domain.models.CourseModel;
 //import com.ead.course.domain.models.CourseUserModel;
 import com.ead.course.domain.models.UserModel;
 import com.ead.course.dtos.SubscriptionDto;
-//import com.ead.course.dtos.UserDto;
+import com.ead.course.dtos.UserDto;
 import com.ead.course.services.CourseService;
 //import com.ead.course.services.CourseUserService;
 import com.ead.course.services.UserService;
@@ -44,9 +44,8 @@ public class CourseUserController {
     @Autowired
     UserService userService;
 
-//    V1
 //    @GetMapping("/courses/{courseId}/users")
-//    public ResponseEntity<Page<UserDto>> getAllUsersByCourse(
+//    public ResponseEntity<Object> getAllUsersByCourse(
 //            SpecificationTemplate.UserSpec spec,
 //            @PageableDefault(page = 0, size = 10, sort = "userId", direction = Sort.Direction.ASC) Pageable pageable,
 //            @PathVariable(value = "courseId") UUID courseId){
@@ -54,10 +53,10 @@ public class CourseUserController {
 //        if(!courseModelOptional.isPresent()){
 //            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Course Not Found.");
 //        }
-//        return ResponseEntity.status(HttpStatus.OK).body(userService.findAll(SpecificationTemplate.userCourseId(courseId).and(spec), pageable));
+//        return ResponseEntity.status(HttpStatus.OK).body("");
 //    }
 
-//    V2
+//    V1
 //    @GetMapping("/courses/{courseId}/users")
 //    public ResponseEntity<Object> getAllUsersByCourse(
 //            SpecificationTemplate.UserSpec spec,
@@ -70,8 +69,21 @@ public class CourseUserController {
 //        return ResponseEntity.status(HttpStatus.OK).body(authUserClient.getAllCoursesByUser(courseId, pageable, null));
 //    }
 
-//  V3
-    //    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
+//    V3
+//    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
+//    @GetMapping("/courses/{courseId}/users")
+//    public ResponseEntity<Page<UserDto>> getAllUsersByCourse(
+//            SpecificationTemplate.UserSpec spec,
+//            @PageableDefault(page = 0, size = 10, sort = "userId", direction = Sort.Direction.ASC) Pageable pageable,
+//            @PathVariable(value = "courseId") UUID courseId){
+//        Optional<CourseModel> courseModelOptional = courseService.findById(courseId);
+//        if(!courseModelOptional.isPresent()){
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Course Not Found.");
+//        }
+//        return ResponseEntity.status(HttpStatus.OK).body(userService.findAll(SpecificationTemplate.userCourseId(courseId).and(spec), pageable));
+//    }
+
+    //V4
     @GetMapping("/courses/{courseId}/users")
     public ResponseEntity<Object> getAllUsersByCourse(
             SpecificationTemplate.UserSpec spec,
@@ -81,7 +93,7 @@ public class CourseUserController {
         if(!courseModelOptional.isPresent()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Course Not Found.");
         }
-        return ResponseEntity.status(HttpStatus.OK).body("");
+        return ResponseEntity.status(HttpStatus.OK).body(userService.findAll(SpecificationTemplate.userCourseId(courseId).and(spec), pageable));
     }
 
 //    V1

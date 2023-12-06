@@ -19,7 +19,8 @@ Segunda semana - Aula 03
 http://localhost:8761/
 
 ### Reference Documentation
-
+https://spring.io/projects/spring-cloud-circuitbreaker
+https://resilience4j.readme.io/docs/circuitbreaker
 
 
 

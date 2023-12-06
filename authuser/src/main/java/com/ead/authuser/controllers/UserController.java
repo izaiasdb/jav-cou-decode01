@@ -111,7 +111,8 @@ public class UserController {
         Optional<UserModel> userModelOptional = userService.findById(userId);
 
         if (userModelOptional.isPresent()) {
-            userService.delete(userModelOptional.get());
+//            userService.delete(userModelOptional.get());
+            userService.deleteUser(userModelOptional.get());
             return ResponseEntity.status(HttpStatus.OK).body("User deleted success");
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
@@ -133,8 +134,8 @@ public class UserController {
             userModel.setPhoneNumber(userDto.getPhoneNumber());
             userModel.setCpf(userDto.getCpf());
             userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
-            userService.save(userModel);
-
+//            userService.save(userModel);
+            userService.saveUser(userModel);
             return  ResponseEntity.status(HttpStatus.OK).body(userModel);
         }
     }
@@ -173,7 +174,8 @@ public class UserController {
             var userModel = userModelOptional.get();
             userModel.setImageUrl(userDto.getImageUrl());
             userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
-            userService.save(userModel);
+            //userService.save(userModel);
+            userService.saveUser(userModel);
             return  ResponseEntity.status(HttpStatus.OK).body(userModel);
         }
     }

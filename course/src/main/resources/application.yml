@@ -22,6 +22,8 @@ spring:
   output:
     ansi:
       enabled: Always
+  rabbitmq:
+    addresses: amqps://blsrpdgi:IC0YfHfXYJizl5SJO_21nDol7faxhdFH@fish.rmq.cloudamqp.com/blsrpdgi
 
 logging:
   level:
@@ -35,6 +37,12 @@ ead:
   api:
     url:
       user: 'http://ead-authuser-service/ead-authuser'
+  broker:
+    exchange:
+      userEventExchange: ead.userevent
+    queue:
+      userEventQueue:
+        name: ead.userevent.ms.course
 
 eureka:
   client:

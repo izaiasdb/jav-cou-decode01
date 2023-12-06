@@ -58,7 +58,7 @@ public class CourseValidator implements Validator {
         CourseDto courseDto = (CourseDto) o;
         validator.validate(courseDto, errors);
         if(!errors.hasErrors()){
-//            validateUserInstructor(courseDto.getUserInstructor(), errors);
+            validateUserInstructor(courseDto.getUserInstructor(), errors);
         }
     }
 
@@ -80,6 +80,7 @@ public class CourseValidator implements Validator {
 //        }
 //    }
 
+//    V2
 //    private void validateUserInstructor(UUID userInstructor, Errors errors){
 //        UUID currentUserId = authenticationCurrentUserService.getCurrentUser().getUserId();
 //        if(currentUserId.equals(userInstructor)) {
@@ -94,4 +95,15 @@ public class CourseValidator implements Validator {
 //            throw new AccessDeniedException("Forbidden");
 //        }
 //    }
+
+    private void validateUserInstructor(UUID userInstructor, Errors errors){
+        Optional<UserModel> userModelOptional = userService.findById(userInstructor);
+
+        if (!userModelOptional.isPresent()) {
+            errors.rejectValue("userInstructor", "UserInstructorError", "Instructor not found.");
+        }
+        if (userModelOptional.get().getUserType().equals(UserType.STUDENT.toString())) {
+            errors.rejectValue("userInstructor", "UserInstructorError", "User must be INSTRUCTOR or ADMIN.");
+        }
+    }
 }

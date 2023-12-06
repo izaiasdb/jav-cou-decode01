@@ -21,12 +21,17 @@ spring:
   output:
     ansi:
       enabled: Always
+  rabbitmq:
+    addresses: amqps://blsrpdgi:IC0YfHfXYJizl5SJO_21nDol7faxhdFH@fish.rmq.cloudamqp.com/blsrpdgi
 
 ead:
   api:
     url:
       course: 'http://ead-course-service/ead-course'
 #      course: http://localhost:8082
+  broker:
+    exchange:
+      userEvent: ead.userevent
 
 eureka:
   client:

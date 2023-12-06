@@ -1,7 +1,7 @@
 package com.ead.authuser.controllers;
 
 import com.ead.authuser.clients.CourseClient;
-import com.ead.authuser.dtos.UserCourseDto;
+//import com.ead.authuser.dtos.UserCourseDto;
 //import com.ead.authuser.models.UserCourseModel;
 import com.ead.authuser.models.UserModel;
 //import com.ead.authuser.services.UserCourseService;
@@ -21,34 +21,34 @@ import javax.validation.Valid;
 import java.util.Optional;
 import java.util.UUID;
 
-//@Log4j2
-//@RestController
-//@CrossOrigin(origins = "*", maxAge = 3600)
-//public class UserCourseController {
-//
-//    @Autowired
-//    CourseClient courseClient;
-//
-//    @Autowired
-//    UserService userService;
-//
+@Log4j2
+@RestController
+@CrossOrigin(origins = "*", maxAge = 3600)
+public class UserCourseController {
+
+    @Autowired
+    CourseClient courseClient;
+
+    @Autowired
+    UserService userService;
+
 //    @Autowired
 //    UserCourseService userCourseService;
-//
-////    @PreAuthorize("hasAnyRole('STUDENT')")
-//    @GetMapping("/users/{userId}/courses")
-//    public ResponseEntity<Object> getAllCoursesByUser(@PageableDefault(page = 0, size = 10, sort = "courseId", direction = Sort.Direction.ASC) Pageable pageable,
-//                                                      @PathVariable(value = "userId") UUID userId
-//                                                      //,@RequestHeader("Authorization") String token
-//    ){
-//        Optional<UserModel> userModelOptional = userService.findById(userId);
-//        if(!userModelOptional.isPresent()){
-//            return  ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
-//        }
-//        //return ResponseEntity.status(HttpStatus.OK).body(courseClient.getAllCoursesByUser(userId, pageable, token));
-//        return ResponseEntity.status(HttpStatus.OK).body(courseClient.getAllCoursesByUser(userId, pageable, null));
-//    }
-//
+
+//    @PreAuthorize("hasAnyRole('STUDENT')")
+    @GetMapping("/users/{userId}/courses")
+    public ResponseEntity<Object> getAllCoursesByUser(@PageableDefault(page = 0, size = 10, sort = "courseId", direction = Sort.Direction.ASC) Pageable pageable,
+                                                      @PathVariable(value = "userId") UUID userId
+                                                      //,@RequestHeader("Authorization") String token
+    ){
+        Optional<UserModel> userModelOptional = userService.findById(userId);
+        if(!userModelOptional.isPresent()){
+            return  ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
+        }
+        //return ResponseEntity.status(HttpStatus.OK).body(courseClient.getAllCoursesByUser(userId, pageable, token));
+        return ResponseEntity.status(HttpStatus.OK).body(courseClient.getAllCoursesByUser(userId, pageable, null));
+    }
+
 //    @PostMapping("/users/{userId}/courses/subscription")
 //    public  ResponseEntity<Object> saveSubscriptionUserInCourse(@PathVariable(value = "userId") UUID userId,
 //                                                                @RequestBody @Valid UserCourseDto userCourse){
@@ -74,4 +74,4 @@ import java.util.UUID;
 //        userCourseService.deleteUserCourseByCourse(courseId);
 //        return  ResponseEntity.status(HttpStatus.OK).body("UserCourse deleted successfully.");
 //    }
-//}
+}
