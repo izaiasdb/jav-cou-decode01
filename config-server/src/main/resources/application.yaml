@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: ead-config-service
+    name: ead-config-server
   cloud:
     config:
       server:
