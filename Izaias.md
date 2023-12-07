@@ -22,7 +22,10 @@ http://localhost:8761/
 https://spring.io/projects/spring-cloud-circuitbreaker
 https://resilience4j.readme.io/docs/circuitbreaker
 https://docs.spring.io/spring-cloud-config/docs/current/reference/html/
-
+Generate token -> checked repoFull control of private repositories
+https://github.com/settings/apps
+Michelli github
+https://github.com/Michelli?tab=repositories
 
 
 
