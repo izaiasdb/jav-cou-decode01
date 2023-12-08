@@ -25,7 +25,10 @@ https://docs.spring.io/spring-cloud-config/docs/current/reference/html/
 Generate token -> checked repoFull control of private repositories
 https://github.com/settings/apps
 Michelli github
-https://github.com/Michelli?tab=repositories
+https://github.com/MichelliBrito
+Spring security
+https://docs.spring.io/spring-security/reference/index.html
+https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/config/annotation/web/configuration/WebSecurityConfigurerAdapter.html
 
 
 

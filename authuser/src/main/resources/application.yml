@@ -33,7 +33,7 @@ spring:
 #    ansi:
 #      enabled: Always
 #  rabbitmq:
-#    addresses: amqps://blsrpdgi:IC0YfHfXYJizl5SJO_21nDol7faxhdFH@fish.rmq.cloudamqp.com/blsrpdgi
+#    addresses: XXXXXXXXXXXXXXXXXXXXXXXXX
 #
 #ead:
 #  api:

@@ -1,11 +1,11 @@
 #server:
-#  port: 8082
+#  port: 8084
 #  servlet:
-#    context-path: '/ead-course/'
+#    context-path: '/ead-notification/'
 
 spring:
   application:
-    name: ead-course-service
+    name: ead-notification-service
   config:
     #    import: 'configserver:'
     import: 'optional:configserver:'
@@ -14,7 +14,7 @@ spring:
       discovery:
         serviceId: ead-config-server
 #  datasource:
-#    url: jdbc:postgresql://localhost:5432/ead-course
+#    url:  jdbc:postgresql://localhost:5432/ead-notification
 #    username: postgres
 #    password: postgres
 #  jpa:
@@ -30,7 +30,7 @@ spring:
 #    ansi:
 #      enabled: Always
 #  rabbitmq:
-#    addresses: XXXXXXXXXXXXXXXXXXXXXXXXX
+#    addresses: amqps://blsrpdgi:IC0YfHfXYJizl5SJO_21nDol7faxhdFH@fish.rmq.cloudamqp.com/blsrpdgi
 #
 #logging:
 #  level:
@@ -38,18 +38,24 @@ spring:
 #    root: INFO
 #    org.springframework.web: DEBUG
 #    org.hibernate: INFO
-#    com.netflix.discovery: WARN
 #
 #ead:
-#  api:
-#    url:
-#      user: 'http://ead-authuser-service/ead-authuser'
 #  broker:
 #    exchange:
-#      userEventExchange: ead.userevent
+#      notificationCommandExchange: ead.notificationcommand
 #    queue:
-#      userEventQueue:
-#        name: ead.userevent.ms.course
+#      notificationCommandQueue:
+#        name: ead.notificationcommand.ms.notification
+#    key:
+#      notificationCommandKey: ms.notification
+#
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include:
+#          - refresh
+#          - health
 #
 #eureka:
 #  client:
@@ -57,10 +63,3 @@ spring:
 #      defaultZone: 'http://localhost:8761/eureka'
 #  instance:
 #    hostname: localhost
-#
-#resilience4j:
-#  retry:
-#    instances:
-#      retryInstance:
-#        maxRetryAttempts: 3
-#        waitDuration: 5s
