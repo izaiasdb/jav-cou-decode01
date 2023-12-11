@@ -8,6 +8,9 @@ spring:
     config:
       discovery:
         serviceId: ead-config-server
+      # Basic authentication
+      username: admin
+      password: 'admin'
 
 #server:
 #  port: 8087

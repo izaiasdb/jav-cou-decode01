@@ -14,6 +14,7 @@ import org.springframework.hateoas.RepresentationModel;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -58,7 +59,14 @@ public class UserModel extends RepresentationModel<UserModel> implements Seriali
 //    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 //    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 //    private Set<UserCourseModel> userCourses;
-//
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(    name = "TB_USERS_ROLES",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<RoleModel> roles = new HashSet<>();
+
 //    public UserCourseModel convertToUserCourseModel(UUID courseId) {
 //        return UserCourseModel.builder()
 //                .user(this)

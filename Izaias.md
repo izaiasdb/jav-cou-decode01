@@ -29,7 +29,8 @@ https://github.com/MichelliBrito
 Spring security
 https://docs.spring.io/spring-security/reference/index.html
 https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/config/annotation/web/configuration/WebSecurityConfigurerAdapter.html
-
+intellij select run debug configuration show max projects running
+https://www.jetbrains.com/help/idea/run-debug-configuration.html#create-permanent
 
 
 

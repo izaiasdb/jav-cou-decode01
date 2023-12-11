@@ -13,6 +13,10 @@ spring:
     config:
       discovery:
         serviceId: ead-config-server
+      # Basic authentication
+      username: admin
+      password: 'admin'
+
 #  datasource:
 #    url: jdbc:postgresql://localhost:5432/ead-course
 #    username: postgres
