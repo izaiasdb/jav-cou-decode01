@@ -31,7 +31,8 @@ https://docs.spring.io/spring-security/reference/index.html
 https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/config/annotation/web/configuration/WebSecurityConfigurerAdapter.html
 intellij select run debug configuration show max projects running
 https://www.jetbrains.com/help/idea/run-debug-configuration.html#create-permanent
-
+Option: Generate Random api key -> jwtSecret
+https://generate-random.org/api-key-generator/512-bit/mixed-numbers?count=1&length=128&type=mixed-numbers-symbols&prefix=
 
 
 

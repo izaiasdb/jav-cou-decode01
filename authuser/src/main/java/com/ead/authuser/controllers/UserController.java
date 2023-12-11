@@ -3,11 +3,14 @@ package com.ead.authuser.controllers;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+import com.ead.authuser.configs.security.AuthenticationCurrentUserService;
+import com.ead.authuser.configs.security.UserDetailsImpl;
 import com.ead.authuser.dtos.UserDto;
 import com.ead.authuser.models.UserModel;
 import com.ead.authuser.services.UserService;
 import com.ead.authuser.specifications.SpecificationTemplate;
 import com.fasterxml.jackson.annotation.JsonView;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +18,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +31,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
+@Log4j2
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600) // Definição de cross a nível de classe, dando acesso a todos
 @RequestMapping("/users")
@@ -31,6 +39,9 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    AuthenticationCurrentUserService authenticationCurrentUserService;
 
 //    V1
 //    @GetMapping
@@ -83,9 +94,26 @@ public class UserController {
 //    }
 
 //    V5
+//    @GetMapping
+//    public ResponseEntity<Page<UserModel>> getAllUsers(SpecificationTemplate.UserSpec spec,
+//                                                       @PageableDefault(page = 0, size = 10, sort = "userId", direction = Sort.Direction.ASC) Pageable pageable){
+//        Page<UserModel> userModelPage = userModelPage = userService.findAll(spec, pageable);
+//        if(!userModelPage.isEmpty()){
+//            for(UserModel user : userModelPage.toList()){
+//                user.add(linkTo(methodOn(UserController.class).getOneUser(user.getUserId())).withSelfRel());
+//            }
+//        }
+//        return ResponseEntity.status(HttpStatus.OK).body(userModelPage);
+//    }
+
+//    V6
+    @PreAuthorize("hasAnyRole('ADMIN','STUDENT')")
     @GetMapping
     public ResponseEntity<Page<UserModel>> getAllUsers(SpecificationTemplate.UserSpec spec,
-                                                       @PageableDefault(page = 0, size = 10, sort = "userId", direction = Sort.Direction.ASC) Pageable pageable){
+                                                       @PageableDefault(page = 0, size = 10, sort = "userId", direction = Sort.Direction.ASC) Pageable pageable,
+                                                       Authentication authentication){
+        UserDetails userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        log.info("Authentication {}", userDetails.getUsername());
         Page<UserModel> userModelPage = userModelPage = userService.findAll(spec, pageable);
         if(!userModelPage.isEmpty()){
             for(UserModel user : userModelPage.toList()){
@@ -95,14 +123,32 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userModelPage);
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<Object> getOneUser(@PathVariable(value = "userId") UUID userId) {
-        Optional<UserModel> userModelOptional = userService.findById(userId);
+//    V1
+//    @GetMapping("/{userId}")
+//    public ResponseEntity<Object> getOneUser(@PathVariable(value = "userId") UUID userId) {
+//        Optional<UserModel> userModelOptional = userService.findById(userId);
+//
+//        if (userModelOptional.isPresent()) {
+//            return ResponseEntity.status(HttpStatus.OK).body(userModelOptional.get());
+//        } else {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+//        }
+//    }
 
-        if (userModelOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.OK).body(userModelOptional.get());
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+    //    V2
+    @PreAuthorize("hasAnyRole('STUDENT')")
+    @GetMapping("/{userId}")
+    public ResponseEntity<Object> getOneUser(@PathVariable(value = "userId") UUID userId){
+        UUID currentUserId = authenticationCurrentUserService.getCurrentUser().getUserId();
+        if(currentUserId.equals(userId)) {
+            Optional<UserModel> userModelOptional = userService.findById(userId);
+            if (!userModelOptional.isPresent()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
+            } else {
+                return ResponseEntity.status(HttpStatus.OK).body(userModelOptional.get());
+            }
+        }else {
+            throw new AccessDeniedException("Forbidden");
         }
     }
 
