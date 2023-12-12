@@ -1,6 +1,5 @@
-package com.ead.authuser.configs.security;
+package com.ead.course.configs.security;
 
-import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,42 +15,20 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.UUID;
 
-@Log4j2
 public class AuthenticationJwtFilter extends OncePerRequestFilter {
 
     @Autowired
     JwtProvider jwtProvider;
 
-    @Autowired
-    UserDetailsServiceImpl userDetailsService;
 
-//    V1
-//    @Override
-//    protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-//        try {
-//            String jwtStr = getTokenHeader(httpServletRequest);
-//            if (jwtStr != null && jwtProvider.validateJwt(jwtStr)) {
-//                String userName = jwtProvider.getUsernameJwt(jwtStr);
-//                UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
-//                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-//                        userDetails, null, userDetails.getAuthorities());
-//                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
-//                SecurityContextHolder.getContext().setAuthentication(authentication);
-//            }
-//        } catch (Exception e) {
-//            logger.error("Cannot set User Authentication: {}", e);
-//        }
-//        filterChain.doFilter(httpServletRequest, httpServletResponse);
-//    }
-
-//    V2
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         try {
             String jwtStr = getTokenHeader(httpServletRequest);
             if (jwtStr != null && jwtProvider.validateJwt(jwtStr)) {
                 String userId = jwtProvider.getSubjectJwt(jwtStr);
-                UserDetails userDetails = userDetailsService.loadUserById(UUID.fromString(userId));
+                String rolesStr = jwtProvider.getClaimNameJwt(jwtStr, "roles");
+                UserDetails userDetails = UserDetailsImpl.build(UUID.fromString(userId), rolesStr);
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));

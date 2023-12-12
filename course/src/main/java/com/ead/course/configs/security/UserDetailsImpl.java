@@ -1,4 +1,4 @@
-package com.ead.notification.configs.security;
+package com.ead.course.configs.security;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

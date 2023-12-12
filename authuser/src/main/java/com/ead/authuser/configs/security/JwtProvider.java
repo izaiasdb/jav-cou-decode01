@@ -21,32 +21,32 @@ public class JwtProvider {
     private int jwtExpirationMs;
 
 //    V1
-    public String generateJwt(Authentication authentication) {
-        UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
-        return Jwts.builder()
-                .setSubject((userPrincipal.getUsername()))
-                .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
-                .compact();
-    }
-
-    //    V2
 //    public String generateJwt(Authentication authentication) {
 //        UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
-//        final String roles = userPrincipal.getAuthorities().stream()
-//                .map(role -> {
-//                    return role.getAuthority();
-//                }).collect(Collectors.joining(","));
-//
 //        return Jwts.builder()
-//                .setSubject((userPrincipal.getUserId().toString()))
-//                .claim("roles",roles)
+//                .setSubject((userPrincipal.getUsername()))
 //                .setIssuedAt(new Date())
 //                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
 //                .signWith(SignatureAlgorithm.HS512, jwtSecret)
 //                .compact();
 //    }
+
+//    V2
+    public String generateJwt(Authentication authentication) {
+        UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
+        final String roles = userPrincipal.getAuthorities().stream()
+                .map(role -> {
+                    return role.getAuthority();
+                }).collect(Collectors.joining(","));
+
+        return Jwts.builder()
+                .setSubject((userPrincipal.getUserId().toString()))
+                .claim("roles",roles)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .compact();
+    }
 
 
     public String getUsernameJwt(String token) {

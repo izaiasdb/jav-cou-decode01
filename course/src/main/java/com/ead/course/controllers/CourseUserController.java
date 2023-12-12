@@ -20,6 +20,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpStatusCodeException;
 
@@ -70,7 +71,6 @@ public class CourseUserController {
 //    }
 
 //    V3
-//    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
 //    @GetMapping("/courses/{courseId}/users")
 //    public ResponseEntity<Page<UserDto>> getAllUsersByCourse(
 //            SpecificationTemplate.UserSpec spec,
@@ -84,6 +84,7 @@ public class CourseUserController {
 //    }
 
     //V4
+    @PreAuthorize("hasAnyRole('INSTRUCTOR')")
     @GetMapping("/courses/{courseId}/users")
     public ResponseEntity<Object> getAllUsersByCourse(
             SpecificationTemplate.UserSpec spec,
@@ -124,7 +125,7 @@ public class CourseUserController {
 //    }
 
 //    V2
-//    @PreAuthorize("hasAnyRole('STUDENT')")
+    @PreAuthorize("hasAnyRole('STUDENT')")
     @PostMapping("/courses/{courseId}/users/subscription")
     public  ResponseEntity<Object> saveSubscriptionUserInCourse(@PathVariable(value = "courseId") UUID courseId,
                                                                 @RequestBody @Valid SubscriptionDto subscriptionDto){

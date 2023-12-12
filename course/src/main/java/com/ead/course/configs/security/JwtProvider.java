@@ -1,4 +1,4 @@
-package com.ead.notification.configs.security;
+package com.ead.course.configs.security;
 
 import io.jsonwebtoken.*;
 import org.apache.logging.log4j.LogManager;
@@ -13,7 +13,6 @@ public class JwtProvider {
 
     @Value("${ead.auth.jwtSecret}")
     private String jwtSecret;
-
 
     public String getSubjectJwt(String token) {
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
