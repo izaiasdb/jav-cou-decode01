@@ -1,0 +1,68 @@
+#server:
+#  port: 8082
+#  servlet:
+#    context-path: '/ead-course/'
+
+spring:
+  config:
+    #    import: 'configserver:'
+    import: 'optional:configserver:'
+  cloud:
+    config:
+      discovery:
+        serviceId: ead-config-server
+      # Basic authentication
+      username: admin
+      password: 'admin'
+
+#  datasource:
+#    url: jdbc:postgresql://localhost:5432/ead-course
+#    username: postgres
+#    password: postgres
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#      dialect: org.hibernate.dialect.PostgreSQLDialect
+#      jdbc:
+#        lob.non-contextual-creation: true
+#    properties:
+#      hibernate:
+#        show_sql: true
+#  output:
+#    ansi:
+#      enabled: Always
+#  rabbitmq:
+#    addresses: XXXXXXXXXXXXXXXXXXXXXXXXX
+#
+#logging:
+#  level:
+#    com.ead: TRACE
+#    root: INFO
+#    org.springframework.web: DEBUG
+#    org.hibernate: INFO
+#    com.netflix.discovery: WARN
+#
+#ead:
+#  api:
+#    url:
+#      user: 'http://ead-authuser-service/ead-authuser'
+#  broker:
+#    exchange:
+#      userEventExchange: ead.userevent
+#    queue:
+#      userEventQueue:
+#        name: ead.userevent.ms.course
+#
+#eureka:
+#  client:
+#    serviceUrl:
+#      defaultZone: 'http://localhost:8761/eureka'
+#  instance:
+#    hostname: localhost
+#
+#resilience4j:
+#  retry:
+#    instances:
+#      retryInstance:
+#        maxRetryAttempts: 3
+#        waitDuration: 5s
