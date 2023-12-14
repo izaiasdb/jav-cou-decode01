@@ -7,10 +7,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="api-gateway" />
         <module name="notification" />
-        <module name="course" />
         <module name="config-server" />
+        <module name="api-gateway" />
+        <module name="course" />
+        <module name="payment" />
         <module name="authuser" />
         <module name="service-registry" />
       </profile>
@@ -22,6 +23,7 @@
       <module name="course" target="11" />
       <module name="jav-cou-decode01" target="11" />
       <module name="notification" target="11" />
+      <module name="payment" target="11" />
       <module name="service-registry" target="11" />
     </bytecodeTargetLevel>
   </component>
@@ -32,6 +34,7 @@
       <module name="config-server" options="-parameters" />
       <module name="course" options="-parameters" />
       <module name="notification" options="-parameters" />
+      <module name="payment" options="-parameters" />
       <module name="service-registry" options="-parameters" />
     </option>
   </component>

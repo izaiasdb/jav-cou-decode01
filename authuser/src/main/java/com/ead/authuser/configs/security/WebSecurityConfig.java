@@ -16,12 +16,14 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled=true)
 @EnableWebSecurity
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+//public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig {
 
     private static final String[] AUTH_WHITELIST = {
             "/auth/**"
@@ -62,8 +64,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //    }
 
     // V3
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+//    @Override
+//    protected void configure(HttpSecurity http) throws Exception {
+//        http
+//                .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
+//                .and()
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and()
+//                .authorizeRequests()
+//                .antMatchers(AUTH_WHITELIST).permitAll()
+//                .anyRequest().authenticated()
+//                .and()
+//                .csrf().disable();
+//        http.addFilterBefore(authenticationJwtFilter(), UsernamePasswordAuthenticationFilter.class);
+//    }
+
+    // V4
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
                 .and()
@@ -75,9 +93,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable();
         http.addFilterBefore(authenticationJwtFilter(), UsernamePasswordAuthenticationFilter.class);
+        return http.build();
     }
 
-    // V1
+//     V1
 //    @Override
 //    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 //        auth.inMemoryAuthentication()
@@ -86,12 +105,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .roles("ADMIN");
 //    }
 
-    // V2
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder());
-    }
+//     V2 //Não precisa mais -> UserDetailsServiceImpl
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.userDetailsService(userDetailsService)
+//                .passwordEncoder(passwordEncoder());
+//    }
 
     @Bean
     public AuthenticationJwtFilter authenticationJwtFilter() {
@@ -107,22 +126,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return roleHierarchy;
     }
 
+//    V1
+//    @Override
 //    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        http
-//                .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
-//                .and()
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-//                .authorizeRequests()
-//                .antMatchers(AUTH_WHITELIST).permitAll()
-//                .anyRequest().authenticated()
-//                .and()
-//                .csrf().disable();
-//        http.addFilterBefore(authenticationJwtFilter(), UsernamePasswordAuthenticationFilter.class);
-//        return http.build();
+//    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+//        return super.getAuthenticationManager();
 //    }
 
+//    V2
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
@@ -132,6 +143,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-
 }

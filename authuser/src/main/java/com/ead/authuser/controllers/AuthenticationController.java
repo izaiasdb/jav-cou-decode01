@@ -84,13 +84,15 @@ public class AuthenticationController {
             log.warn("Email {} is Already Taken ", userDto.getEmail());
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Error: Email is Already Taken!");
         }
-        RoleModel roleModel = roleService.findByRoleName(RoleType.ROLE_STUDENT)
+        //RoleModel roleModel = roleService.findByRoleName(RoleType.ROLE_STUDENT)
+        RoleModel roleModel = roleService.findByRoleName(RoleType.ROLE_USER)
                 .orElseThrow(() -> new RuntimeException("Error: Role is Not Found."));
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
         var userModel = new UserModel();
         BeanUtils.copyProperties(userDto, userModel);
         userModel.setUserStatus(UserStatus.ACTIVE);
-        userModel.setUserType(UserType.STUDENT);
+        //userModel.setUserType(UserType.STUDENT);
+        userModel.setUserType(UserType.USER);
         userModel.setCreationDate(LocalDateTime.now(ZoneId.of("UTC")));
         userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
         userModel.getRoles().add(roleModel);
