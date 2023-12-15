@@ -25,7 +25,8 @@ public class WebSecurityConfig {
         http
                 .httpBasic()
                 .and()
-                .authorizeRequests()
+//                .authorizeRequests() //Srping < 3
+                .authorizeHttpRequests()
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable()

@@ -3,7 +3,7 @@ package com.ead.course.dtos;
 import lombok.Builder;
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import java.util.UUID;
 //
 //@Builder

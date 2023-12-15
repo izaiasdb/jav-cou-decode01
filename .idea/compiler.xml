@@ -17,14 +17,14 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="api-gateway" target="11" />
-      <module name="authuser" target="11" />
-      <module name="config-server" target="11" />
-      <module name="course" target="11" />
-      <module name="jav-cou-decode01" target="11" />
-      <module name="notification" target="11" />
-      <module name="payment" target="11" />
-      <module name="service-registry" target="11" />
+      <module name="api-gateway" target="17" />
+      <module name="authuser" target="17" />
+      <module name="config-server" target="17" />
+      <module name="course" target="17" />
+      <module name="jav-cou-decode01" target="17" />
+      <module name="notification" target="17" />
+      <module name="payment" target="17" />
+      <module name="service-registry" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
